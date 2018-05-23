@@ -1,6 +1,6 @@
 <?php
 // require_once './include/student.function.php';
-require_once './include/c.function.php';
+require_once './include/sc.function.php';
     if(isset($_GET['action_type']))
     {
         $action_type = $_GET['action_type'];
@@ -15,57 +15,56 @@ require_once './include/c.function.php';
     switch($action_type)
     {
 
-        case 'get_c':
-            $Cpno = isset($_GET['Cpno'])?$_GET['Cpno']:'';
+        case 'get_sc':
+            $Sname = isset($_GET['Sname'])?$_GET['Sname']:'';
             $Cname = isset($_GET['Cname'])?$_GET['Cname']:'';
-            $result = get_c($page,$page_num,$Cpno,$Cname);
+            $result = get_sc($page,$page_num,$Sname,$Cname);
             break;
 
-        case 'search_c':
+        case 'search_sc':
             if(isset($_GET['word']))
             {
                 $word = $_GET['word'];
-                $result = search_c($word);
+                $result = search_sc($word);
             }else {
                 Result::error('missing parameter');
             }
             break;
-        case 'insert_c':
-            if(isset($_GET['Cno'],$_GET['Cname'],$_GET['Cpno'],$_GET['Ccredit']))
+        case 'insert_sc':
+            if(isset($_GET['Cno'],$_GET['Sno'],$_GET['Grade']))
             {
                 $Cno = $_GET['Cno'];
-                $Cname = $_GET['Cname'];
-                $Cpno = $_GET['Cpno'];
-                $Ccredit = $_GET['Ccredit'];
+                $Sno = $_GET['Sno'];
+                $Grade = $_GET['Grade'];
 
-                $result = insert_c($Cno,$Cname,$Cpno,$Ccredit);
+                $result = insert_sc($Cno,$Sno,$Grade);
             } else {
                 Result::error('missing parameter');
             }
             break;
-        case 'update_c':
-            if(isset($_GET['Cno'],$_GET['Cname'],$_GET['Cpno'],$_GET['Ccredit']))
+        case 'update_sc':
+            if(isset($_GET['Cno'],$_GET['Sno'],$_GET['Grade']))
             {
                 $Cno = $_GET['Cno'];
-                $Cname = $_GET['Cname'];
-                $Cpno = $_GET['Cpno'];
-                $Ccredit = $_GET['Ccredit'];
-                $result = update_c($Cno,$Cname,$Cpno,$Ccredit);
+                $Sno = $_GET['Sno'];
+                $Grade = $_GET['Grade'];
+                $result = update_sc($Cno,$Sno,$Grade);
             } else {
                 Result::error('missing parameter');
             }
             break;
-        case 'delete_c':
-            if(isset($_GET['Cno']))
+        case 'delete_sc':
+            if(isset($_GET['Cno'],$_GET['Sno']))
             {
                 $Cno = $_GET['Cno'];
-                $result = delete_c($Cno);
+                $Sno = $_GET['Sno'];
+                $result = delete_sc($Cno,$Sno);
             } else {
                 Result::error('missing parameter');
             }
             break;
-        case 'get_cpno':
-            $result = get_cpno();
+        case 'get_cname':
+            $result = get_cname();
             break;
     }
     Result::success($result);

@@ -46,6 +46,16 @@
                         title: '学生'
                     },
                     {
+                        icon: 'el-icon-tickets',
+                        index: 'allc',
+                        title: '课程'
+                    },
+                    {
+                        icon: 'el-icon-tickets',
+                        index: 'allsc',
+                        title: '成绩'
+                    },
+                    {
                         icon: 'el-icon-message',
                         index: 'tabs',
                         title: 'tab选项卡'

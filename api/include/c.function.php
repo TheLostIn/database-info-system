@@ -1,9 +1,9 @@
  <?php
- function get_dept()
+ function get_cpno()
     {
         global $db;
-        $re = $db->select('s',['Sdept'],[
-            "GROUP" => ["Sdept"]
+        $re = $db->select('c',['Cpno'],[
+            "GROUP" => ["Cpno"]
         ]);
         return $re;
     }
@@ -19,60 +19,58 @@
             ]);
         }else {
             # code...
-            $re = $db->select('s','*',[
+            $re = $db->select('c','*',[
                 'AND'=>[
                     'Cname[~]' =>$Cname,
                     'OR'=>[
-                        'Sno[~]' =>$Cpno,
-                        'Sname[~]' =>$Cpno,
-                        'Sage[~]' =>$Cpno,
-                        'Ssex[~]' =>$Cpno
+                        'Cno[~]' =>$Cpno,
+                        'Cpno[~]' =>$Cpno,
+                        'Ccredit[~]' =>$Cpno
                     ]
                     ],
-                "ORDER" => ["Sno" => "DESC"],
+                "ORDER" => ["Cno" => "DESC"],
                 "LIMIT" => [$page*$page_num,$page_num]
             ]);
         }
         return $re;
     }
-    function search_s($word)
+    function search_c($word)
     {
         global $db;
-        $re = $db->select('s','*',[
+        $re = $db->select('c','*',[
             'OR'=>[
-                'Sno[~]' =>$word,
+                'Cno[~]' =>$word,
                 'Sname[~]' =>$word,
                 'Sage[~]' =>$word,
                 'Sdept[~]' =>$word,
                 'Ssex[~]' =>$word
             ]
         ],[
-            "ORDER" => ["Sno" => "DESC"],
+            "ORDER" => ["Cno" => "DESC"],
             // "LIMIT" => [$page*$page_num,$page_num]
         ]);
         return $re;
     }
-    function delete_s($Sno)
+    function delete_c($Cno)
     {
         global $db;
-        $re = $db->delete('s',[
-            'Sno'=>$Sno
+        $re = $db->delete('c',[
+            'Cno'=>$Cno
         ]);
         // var_dump($re);
         return $re;
     }
-    function insert_s($Sno,$Sname,$Sage,$Sdept,$Ssex)
+    function insert_c($Cno,$Cname,$Cpno,$Ccredit)
     {
         global $db;
-        $re = $db->has('s',['Sno'=>$Sno]);
+        $re = $db->has('c',['Cno'=>$Cno]);
         if(!$re)
         {
-            $re = $db->insert('s',[
-                'Sno' =>$Sno,
-                'Sname' =>$Sname,
-                'Sage' =>$Sage,
-                'Sdept' =>$Sdept,
-                'Ssex' =>$Ssex
+            $re = $db->insert('c',[
+                'Cno' =>$Cno,
+                'Cname' =>$Cname,
+                'Cpno' =>$Cpno,
+                'Ccredit' =>$Ccredit,
             ]);
             $result['status'] = 1;
         }else {
@@ -80,34 +78,15 @@
         }
         return $result;
     }
-    function update_s($Sno,$Sname,$Sage,$Sdept,$Ssex)
+    function update_c($Cno,$Cname,$Cpno,$Ccredit)
     {
         global $db;
-        $re = $db->update('s',[
-            'Sname' =>$Sname,
-            'Sage' =>$Sage,
-            'Sdept' =>$Sdept,
-            'Ssex' =>$Ssex
+        $re = $db->update('c',[
+            'Cname' =>$Cname,
+            'Cpno' =>$Cpno,
+            'Ccredit' =>$Ccredit,
         ],[
-            'Sno' => $Sno
+            'Cno' => $Cno
         ]);
         return $re;
     }
-    //  function get_c($page,$page_num)
-    // {
-    //     global $db;
-    //     $re = $db->select('c','*',[
-    //         "ORDER" => ["Cno" => "DESC"],
-    //         "LIMIT" => [$page*$page_num,$page_num]
-    //     ]);
-    //     return $re;
-    // }
-    // function get_sc($page,$page_num)
-    // {
-    //     global $db;
-    //     $re = $db->select('sc','*',[
-    //         "ORDER" => ["Sno" => "DESC"],
-    //         "LIMIT" => [$page*$page_num,$page_num]
-    //     ]);
-    //     return $re;
-    // }

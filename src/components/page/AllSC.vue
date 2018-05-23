@@ -9,8 +9,8 @@
             <div class="handle-box">
                 <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
                 <el-select v-model="select_cate" placeholder="筛选系" class="handle-select mr10"  @change="search">
-                    <el-option value="" label="所有"></el-option>
-                    <el-option v-for="dept in dept_list" :key="dept.Sdept" :label="dept.Sdept" :value="dept.Sdept"></el-option>
+                    <el-option value="" label="课程名"></el-option>
+                    <el-option v-for="cpno in cpno_list" :key="cpno.Cname" :label="cpno.Cname" :value="cpno.Cname"></el-option>
                 </el-select>
                 <el-input v-model="select_word" placeholder="筛选关键词" @change="search" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search" >搜索</el-button>
@@ -22,14 +22,20 @@
                 </el-table-column> -->
                 <el-table-column prop="Sno" sortable label="学号" width="120">
                 </el-table-column>
-                <el-table-column prop="Sage" sortable label="年龄" width="120">
-                </el-table-column>
                 <el-table-column prop="Sname" sortable label="姓名" width="120">
                 </el-table-column>
-                <el-table-column prop="Sdept" sortable label="系" width="120">
+                <el-table-column prop="Cno" sortable label="课程号" width="120">
+                 </el-table-column>
+                <el-table-column prop="Cname" sortable label="课程名" width="120">
                 </el-table-column>
-                <el-table-column prop="Ssex" sortable label="性别" width="120">
+                <el-table-column prop="Grade" sortable label="成绩" width="120">
                 </el-table-column>
+                <!-- <el-table-column prop="Cpno" sortable label="前导课程号" width="120">
+                </el-table-column> -->
+                <el-table-column prop="Ccredit" sortable label="学分" width="120">
+                </el-table-column>
+                <!-- <el-table-column prop="Ssex" sortable label="性别" width="120">
+                </el-table-column> -->
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -48,21 +54,24 @@
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="50px">
-                <el-form-item label="姓名">
-                    <el-input v-model="form.Sname"></el-input>
-                </el-form-item>
                 <el-form-item label="学号">
                     <el-input v-model="form.Sno" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="年龄">
-                    <el-input v-model="form.Sage"></el-input>
+                <el-form-item label="姓名">
+                    <el-input v-model="form.Sname" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="系名">
-                    <el-input v-model="form.Sdept"></el-input>
+                <el-form-item label="课程号">
+                    <el-input v-model="form.Cno" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="性别">
+                <el-form-item label="课程名">
+                    <el-input v-model="form.Cname" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="成绩">
+                    <el-input v-model="form.Grade"></el-input>
+                </el-form-item>
+                <!-- <el-form-item label="性别">
                     <el-input v-model="form.Ssex"></el-input>
-                </el-form-item>
+                </el-form-item> -->
 
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -73,20 +82,20 @@
         <!-- 添加弹出框 -->
         <el-dialog title="添加" :visible.sync="addVisible" width="30%">
             <el-form ref="form" :model="form" label-width="50px">
-                <el-form-item label="姓名">
-                    <el-input v-model="form.Sname"></el-input>
-                </el-form-item>
-                <el-form-item label="学号">
+               <el-form-item label="学号">
                     <el-input v-model="form.Sno"></el-input>
                 </el-form-item>
-                <el-form-item label="年龄">
-                    <el-input v-model="form.Sage"></el-input>
+                <!-- <el-form-item label="姓名">
+                    <el-input v-model="form.Sname"></el-input>
+                </el-form-item> -->
+                <el-form-item label="课程号">
+                    <el-input v-model="form.Cno"></el-input>
                 </el-form-item>
-                <el-form-item label="系名">
-                    <el-input v-model="form.Sdept"></el-input>
-                </el-form-item>
-                <el-form-item label="性别">
-                    <el-input v-model="form.Ssex"></el-input>
+                <!-- <el-form-item label="课程名">
+                    <el-input v-model="form.Cname"></el-input>
+                </el-form-item> -->
+                <el-form-item label="成绩">
+                    <el-input v-model="form.Grade"></el-input>
                 </el-form-item>
 
             </el-form>
@@ -111,27 +120,27 @@
     export default {
         data() {
             return {
-                url: '/index.php?_action=getStudent',
+                url: '/index.php?_action=getSC',
                 tableData: [],
                 cur_page: 0,
                 multipleSelection: [],
                 select_cate: '',
                 select_word: '',
                 select_dept:'',
-                dept_list: [],
+                cpno_list: [],
                 del_list: [],
                 is_search: false,
                 editVisible: false,
                 addVisible: false,
                 delVisible: false,
                 page_num:5,
+                delCno:'',
                 delSno:'',
                 form: {
-                    Sname: '',
-                    Sno: '',
-                    Sage: '',
-                    Sdept: '',
-                    Ssex:''
+                    Cno: '',
+                    Cname: '',
+                    Cpno: '',
+                    Ccredit: '',
                 },
                 idx: -1
             }
@@ -177,7 +186,7 @@
                 // if (process.env.NODE_ENV === 'development') {
                 //     this.url = '/ms/table/list';
                 // };
-                this.$axios.get(this.$domin+this.url+'&action_type=get_s&page='+this.cur_page+'&page_num='+this.page_num+'&word='+this.select_word+'&dept='+this.select_cate).then((res) => {
+                this.$axios.get(this.$domin+this.url+'&action_type=get_sc&page='+this.cur_page+'&page_num='+this.page_num+'&Cname='+this.select_cate+'&Sname='+this.select_word).then((res) => {
                     console.log(res);
                     if(res.data.data){
                         this.tableData = res.data.data;
@@ -185,10 +194,10 @@
                         this.$message.error('没有查询到相关信息');
                     }
                 })
-                this.$axios.get(this.$domin+this.url+'&action_type=get_dept&page='+this.cur_page+'&page_num='+this.page_num+'&word='+this.select_word).then((res) => {
+                this.$axios.get(this.$domin+this.url+'&action_type=get_cname&page='+this.cur_page+'&page_num='+this.page_num+'&word='+this.select_word).then((res) => {
                     console.log(res);
                     if(res.data.data){
-                        this.dept_list = res.data.data;
+                        this.cpno_list = res.data.data;
                     }
                 })
             },
@@ -213,17 +222,18 @@
                 this.idx = index;
                 const item = this.tableData[index];
                 this.form = {
-                    Sname : item.Sname,
-                    Sno : item.Sno,
-                    Sage : item.Sage,
-                    Sdept : item.Sdept,
-                    Ssex : item.Ssex
+                    Sno: item.Sno,
+                    Sname: item.Sname,
+                    Cno: item.Cno,
+                    Cname: item.Cname,
+                    Grade: item.Grade
                 }
                 this.editVisible = true;
             },
             handleDelete(index, row) {
                 this.idx = index;
                 const item = this.tableData[index];
+                this.delCno = item.Cno;
                 this.delSno = item.Sno;
                 this.delVisible = true;
             },
@@ -244,12 +254,10 @@
             saveEdit() {
                 this.$set(this.tableData, this.idx, this.form);
                 this.editVisible = false;
-                this.$axios.get(this.$domin+this.url+'&action_type=update_s'+
-                    '&Sname='+ this.form.Sname+
+                this.$axios.get(this.$domin+this.url+'&action_type=update_sc'+
+                    '&Cno='+ this.form.Cno+
                     '&Sno='+ this.form.Sno+
-                    '&Sage='+ this.form.Sage+
-                    '&Sdept='+ this.form.Sdept+
-                    '&Ssex='+ this.form.Ssex
+                    '&Grade='+ this.form.Grade
                 ).then((res) => {
                     console.log(res);
                 //    this.tableData = res.data.data;
@@ -258,8 +266,10 @@
             },
             // 确定删除
             deleteRow(){
-                this.$axios.get(this.$domin+this.url+'&action_type=delete_s'+
+                this.$axios.get(this.$domin+this.url+'&action_type=delete_sc'+
+                    '&Cno='+ this.delCno+
                     '&Sno='+ this.delSno
+
                 ).then((res) => {
                     console.log(res);
                 })
@@ -269,22 +279,18 @@
             },
             handleAdd() {
                 this.form = {
-                    Sname : '',
+                    Cno : '',
                     Sno : '',
-                    Sage : '',
-                    Sdept : '',
-                    Ssex : ''
+                    Grade : ''
                 }
                 this.addVisible = true;
             },
             saveAdd(){
                 this.addVisible = false;
-                this.$axios.get(this.$domin+this.url+'&action_type=insert_s'+
-                    '&Sname='+ this.form.Sname+
+                this.$axios.get(this.$domin+this.url+'&action_type=insert_sc'+
+                    '&Cno='+ this.form.Cno+
                     '&Sno='+ this.form.Sno+
-                    '&Sage='+ this.form.Sage+
-                    '&Sdept='+ this.form.Sdept+
-                    '&Ssex='+ this.form.Ssex
+                    '&Grade='+ this.form.Grade
                 ).then((res) => {
                     console.log(res);
                     if(res.data.data.status==1)

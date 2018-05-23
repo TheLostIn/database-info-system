@@ -30,6 +30,16 @@ export default new Router({
                     meta: { title: '学生' }
                 },
                 {
+                    path: '/allc',
+                    component: resolve => require(['../components/page/AllC.vue'], resolve),
+                    meta: { title: '课程' }
+                },
+                {
+                    path: '/allsc',
+                    component: resolve => require(['../components/page/AllSC.vue'], resolve),
+                    meta: { title: '成绩' }
+                },
+                {
                     path: '/tabs',
                     component: resolve => require(['../components/page/Tabs.vue'], resolve),
                     meta: { title: 'tab选项卡' }
