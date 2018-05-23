@@ -7,10 +7,10 @@
         ]);
         return $re;
     }
-    function get_c($page,$page_num,$word,$Cname)
+    function get_c($page,$page_num,$Cpno,$Cname)
     {
         global $db;
-        if($word=='')
+        if($Cpno=='')
         {
             $re = $db->select('c','*',[
                 'Cname[~]' =>$Cname,
@@ -23,10 +23,10 @@
                 'AND'=>[
                     'Cname[~]' =>$Cname,
                     'OR'=>[
-                        'Sno[~]' =>$word,
-                        'Sname[~]' =>$word,
-                        'Sage[~]' =>$word,
-                        'Ssex[~]' =>$word
+                        'Sno[~]' =>$Cpno,
+                        'Sname[~]' =>$Cpno,
+                        'Sage[~]' =>$Cpno,
+                        'Ssex[~]' =>$Cpno
                     ]
                     ],
                 "ORDER" => ["Sno" => "DESC"],

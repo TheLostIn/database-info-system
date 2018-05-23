@@ -28,8 +28,8 @@ if(!isset($_SESSION)){
 }
 // white list
 // $actionList = ['postLogin','upload','getImage','get_show_pic','postSignup','collect_info','chatting','chatting2','getMessages','getGroups','addGroup','addGroupusers','getUsers','addMessage','getLogou'];
-$actionList = ['admin','postLogin','postSignup','getStudent','getS','getC','getSC'];
-$noTokenList = ['admin','postLogin','postSignup','getS','getStudent','getC','getSC'];
+$actionList = ['admin','postLogin','postSignup','getStudent','getCourse','getS','getC','getSC'];
+$noTokenList = ['admin','postLogin','postSignup','getS','getStudent','getCourse','getC','getSC'];
 
 define('UPLOAD_DIR', '/www/upload/work-system/');
 
